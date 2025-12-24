@@ -1,0 +1,345 @@
+{
+    "name": "Whatsapp AI Agent",
+    "nodes": [
+        {
+            "parameters": {
+                "updates": [
+                    "com.twilio.messaging.inbound-message.received"
+                ]
+            },
+            "type": "n8n-nodes-base.twilioTrigger",
+            "typeVersion": 1,
+            "position": [
+                16,
+                0
+            ],
+            "id": "f56d7002-a87f-4d45-9537-6c83c3baca20",
+            "name": "Twilio Trigger",
+            "webhookId": "53d67bed-d773-4ae0-a559-c2f736378a12",
+            "credentials": {
+                "twilioApi": {
+                    "id": "86PTre8sMUCohK4h",
+                    "name": "Twilio account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "resource": "assistant",
+                "assistantId": {
+                    "__rl": true,
+                    "value": "asst_kwPi0EVz05yF4TQ2QPiOJ4dx",
+                    "mode": "list",
+                    "cachedResultName": "Dressed Delights Assistance "
+                },
+                "prompt": "define",
+                "text": "=User Message: {{ $json.data.body }}\n\nToday's date and the current time: {{ $now }}",
+                "options": []
+            },
+            "type": "@n8n\/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8000000000000000444089209850062616169452667236328125,
+            "position": [
+                368,
+                0
+            ],
+            "id": "cca184ac-5317-4696-86a5-487c7d81b4f7",
+            "name": "Message a model",
+            "credentials": {
+                "openAiApi": {
+                    "id": "86VDdCuxf4yAbyUf",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "sessionIdType": "customKey",
+                "sessionKey": "={{ $('Twilio Trigger').item.json.data.from.replace('whatsapp:', '') }}",
+                "contextWindowLength": 50
+            },
+            "type": "@n8n\/n8n-nodes-langchain.memoryBufferWindow",
+            "typeVersion": 1.3000000000000000444089209850062616169452667236328125,
+            "position": [
+                640,
+                224
+            ],
+            "id": "39ac5c3c-c92e-4192-ac0c-a4b9a31b5b47",
+            "name": "Simple Memory"
+        },
+        {
+            "parameters": {
+                "operation": "append",
+                "documentId": {
+                    "__rl": true,
+                    "value": "1dLcGU5PaSortTCmxZRnH9-2XARQuDd9ZS03xVeTBap0",
+                    "mode": "list",
+                    "cachedResultName": "Support Issues",
+                    "cachedResultUrl": "https:\/\/docs.google.com\/spreadsheets\/d\/1dLcGU5PaSortTCmxZRnH9-2XARQuDd9ZS03xVeTBap0\/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "gid=0",
+                    "mode": "list",
+                    "cachedResultName": "Sheet1",
+                    "cachedResultUrl": "https:\/\/docs.google.com\/spreadsheets\/d\/1dLcGU5PaSortTCmxZRnH9-2XARQuDd9ZS03xVeTBap0\/edit#gid=0"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Issue Number": "={{ Date.now() }}",
+                        "Name": "={{ \/*n8n-auto-generated-fromAI-override*\/ $fromAI('Name', ``, 'string') }}",
+                        "Created": "={{ $now }}",
+                        "Phone Number": "={{ \/*n8n-auto-generated-fromAI-override*\/ $fromAI('Phone_Number', ``, 'string') }}",
+                        "Email": "={{ \/*n8n-auto-generated-fromAI-override*\/ $fromAI('Email', ``, 'string') }}",
+                        "Issue": "={{ \/*n8n-auto-generated-fromAI-override*\/ $fromAI('Issue', ``, 'string') }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "Issue Number",
+                            "displayName": "Issue Number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Name",
+                            "displayName": "Name",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Phone Number",
+                            "displayName": "Phone Number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Email",
+                            "displayName": "Email",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Issue",
+                            "displayName": "Issue",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "Created",
+                            "displayName": "Created",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": []
+            },
+            "type": "n8n-nodes-base.googleSheetsTool",
+            "typeVersion": 4.5999999999999996447286321199499070644378662109375,
+            "position": [
+                512,
+                224
+            ],
+            "id": "a8d0483c-70b1-4e8e-ad33-8cae4284beb0",
+            "name": "Create Tickets",
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "iYKCya5HEQXSQV4N",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "from": "={{ $('Twilio Trigger').item.json.data.to.replace('whatsapp:', \"\") }}",
+                "to": "={{ $('Twilio Trigger').item.json.data.from.replace('whatsapp:', \"\") }}",
+                "toWhatsapp": true,
+                "message": "={{ $json.output }}",
+                "options": []
+            },
+            "type": "n8n-nodes-base.twilio",
+            "typeVersion": 1,
+            "position": [
+                1056,
+                0
+            ],
+            "id": "9668eb1c-9d3e-41ef-a572-e7854ae3a46f",
+            "name": "Send an SMS\/MMS\/WhatsApp message",
+            "credentials": {
+                "twilioApi": {
+                    "id": "86PTre8sMUCohK4h",
+                    "name": "Twilio account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "getAll",
+                "returnAll": true,
+                "options": {
+                    "stockStatus": "instock"
+                }
+            },
+            "type": "n8n-nodes-base.wooCommerceTool",
+            "typeVersion": 1,
+            "position": [
+                240,
+                224
+            ],
+            "id": "cd86692d-8bc8-48aa-867d-99db5f9cd8fc",
+            "name": "Get Inventory",
+            "credentials": {
+                "wooCommerceApi": {
+                    "id": "pK1ypImFbgOgpX9Z",
+                    "name": "WooCommerce account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "resource": "order",
+                "operation": "get",
+                "orderId": "={{ \/*n8n-auto-generated-fromAI-override*\/ $fromAI('Order_ID', ``, 'string') }}"
+            },
+            "type": "n8n-nodes-base.wooCommerceTool",
+            "typeVersion": 1,
+            "position": [
+                384,
+                224
+            ],
+            "id": "5bd05c4f-c898-4ce8-9d77-74ab0e4144e7",
+            "name": "Get Orders",
+            "credentials": {
+                "wooCommerceApi": {
+                    "id": "pK1ypImFbgOgpX9Z",
+                    "name": "WooCommerce account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "const output = items[0].json.output;\n\n\/\/ Function to remove annotations like 【...】\nfunction removeAnnotations(text) {\n  return text.replace(\/【[^】]*】\/g, '').trim();\n}\n\nreturn [\n  {\n    json: {\n      output: removeAnnotations(output)\n    }\n  }\n];"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                832,
+                0
+            ],
+            "id": "0a317803-229a-46a9-8c29-627430d93409",
+            "name": "Remove Annotations"
+        }
+    ],
+    "pinData": [],
+    "connections": {
+        "Twilio Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Message a model",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Simple Memory": {
+            "ai_memory": [
+                [
+                    {
+                        "node": "Message a model",
+                        "type": "ai_memory",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Create Tickets": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "Message a model",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Message a model": {
+            "main": [
+                [
+                    {
+                        "node": "Remove Annotations",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get Inventory": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "Message a model",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get Orders": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "Message a model",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Remove Annotations": {
+            "main": [
+                [
+                    {
+                        "node": "Send an SMS\/MMS\/WhatsApp message",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": true,
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "versionId": "262ef96f-b8a5-47c9-995b-03a28f027b80",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "563a280de80ecee60d2f1498fd0ce0ace8a21f42297910a2ff3ade9852f6c40b"
+    },
+    "id": "L47tRlStULJNbkZx",
+    "tags": []
+}

@@ -1,0 +1,993 @@
+{
+    "name": "YT Comment Reply [Template]",
+    "nodes": [
+        {
+            "parameters": {
+                "options": []
+            },
+            "type": "n8n-nodes-base.splitInBatches",
+            "typeVersion": 3,
+            "position": [
+                -4140,
+                20
+            ],
+            "id": "91fcc1fc-b50f-4237-8a8b-65a1e5979320",
+            "name": "Loop Over Items"
+        },
+        {
+            "parameters": [],
+            "type": "n8n-nodes-base.noOp",
+            "name": "Replace Me",
+            "typeVersion": 1,
+            "position": [
+                -1660,
+                -460
+            ],
+            "id": "1f823bcb-68f4-46a6-833d-58fd705ee2d9"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "e8e39b87-349c-4977-b11f-42c780509e39",
+                            "leftValue": "={{ $json.id_comment }}",
+                            "rightValue": "",
+                            "operator": {
+                                "type": "string",
+                                "operation": "notEmpty",
+                                "singleValue": true
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": []
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.20000000000000017763568394002504646778106689453125,
+            "position": [
+                -3720,
+                40
+            ],
+            "id": "dc8730d9-09cb-4973-954e-54375011e447",
+            "name": "If"
+        },
+        {
+            "parameters": [],
+            "type": "n8n-nodes-base.noOp",
+            "typeVersion": 1,
+            "position": [
+                -3460,
+                200
+            ],
+            "id": "3a36baab-aaf2-4b02-9f66-ea6b4ef69803",
+            "name": "No Operation, do nothing"
+        },
+        {
+            "parameters": {
+                "jsonSchemaExample": "{\n\t\"out\": \"criticize\"\n}"
+            },
+            "type": "@n8n\/n8n-nodes-langchain.outputParserStructured",
+            "typeVersion": 1.1999999999999999555910790149937383830547332763671875,
+            "position": [
+                -3020,
+                200
+            ],
+            "id": "d76bf387-ce51-4271-a078-891e5d31235a",
+            "name": "Structured Output Parser"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "chatgpt-4o-latest",
+                    "mode": "list",
+                    "cachedResultName": "chatgpt-4o-latest"
+                },
+                "options": []
+            },
+            "type": "@n8n\/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.1999999999999999555910790149937383830547332763671875,
+            "position": [
+                -3200,
+                200
+            ],
+            "id": "fc08a371-71e2-47c4-8e60-34484291fa68",
+            "name": "gpt-4o-mini",
+            "credentials": {
+                "openAiApi": {
+                    "id": "jt2gEsC9mI3P5Ary",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "e81468ed-000d-4536-ab9b-6728b4d9080d",
+                                        "leftValue": "={{ $json.output.out }}",
+                                        "rightValue": "criticize",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "criticize"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "={{ $json.output.out }}",
+                                        "rightValue": "compliment",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        },
+                                        "id": "a7bad62c-7f27-4b47-af1d-e30bb92e370e"
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "compliment"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "2f32203e-5acf-4834-9061-4e3669c9b657",
+                                        "leftValue": "={{ $json.output.out }}",
+                                        "rightValue": "specificdoubt",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "specificdoubt"
+                        }
+                    ]
+                },
+                "options": []
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.20000000000000017763568394002504646778106689453125,
+            "position": [
+                -2840,
+                -40
+            ],
+            "id": "afb92df8-d76b-4ca6-ae08-8c1b92ff6e17",
+            "name": "Switch"
+        },
+        {
+            "parameters": [],
+            "type": "n8n-nodes-base.noOp",
+            "typeVersion": 1,
+            "position": [
+                -2720,
+                -460
+            ],
+            "id": "3b8d329f-6592-49a7-89fc-19f455c2b95a",
+            "name": "No Operation, do nothing1"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "chatgpt-4o-latest",
+                    "mode": "list",
+                    "cachedResultName": "chatgpt-4o-latest"
+                },
+                "options": []
+            },
+            "type": "@n8n\/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.1999999999999999555910790149937383830547332763671875,
+            "position": [
+                -2460,
+                -40
+            ],
+            "id": "906beb27-3b2b-45cd-9680-31397d6e6015",
+            "name": "gpt-4o-mini1",
+            "credentials": {
+                "openAiApi": {
+                    "id": "jt2gEsC9mI3P5Ary",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "chatgpt-4o-latest",
+                    "mode": "list",
+                    "cachedResultName": "chatgpt-4o-latest"
+                },
+                "options": []
+            },
+            "type": "@n8n\/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.1999999999999999555910790149937383830547332763671875,
+            "position": [
+                -2460,
+                320
+            ],
+            "id": "abde75cf-357b-4835-82ae-670ef6ee63b1",
+            "name": "gpt-4o-mini2",
+            "credentials": {
+                "openAiApi": {
+                    "id": "jt2gEsC9mI3P5Ary",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "tableId": "YT_Comment",
+                "fieldsUi": {
+                    "fieldValues": [
+                        {
+                            "fieldId": "=id_comment",
+                            "fieldValue": "={{ $('Loop Over Items').item.json.items.snippet.topLevelComment.id }}"
+                        },
+                        {
+                            "fieldId": "=comment",
+                            "fieldValue": "={{ $('Loop Over Items').item.json.items.snippet.topLevelComment.snippet.textOriginal }}"
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.supabase",
+            "typeVersion": 1,
+            "position": [
+                -3460,
+                -40
+            ],
+            "id": "5385c9be-b683-4d6d-abab-55b0aa863e12",
+            "name": "Update comment to Database",
+            "credentials": {
+                "supabaseApi": {
+                    "id": "jDE2TNcRqPChg6v5",
+                    "name": "Supabase account 2"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "get",
+                "tableId": "YT_Comment",
+                "filters": {
+                    "conditions": [
+                        {
+                            "keyName": "=id_comment",
+                            "keyValue": "={{ $json.items.snippet.topLevelComment.id }}"
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.supabase",
+            "typeVersion": 1,
+            "position": [
+                -3920,
+                40
+            ],
+            "id": "43eda61b-8670-4763-8fc9-87a3ece0fa2e",
+            "name": "Get Database Value",
+            "alwaysOutputData": true,
+            "credentials": {
+                "supabaseApi": {
+                    "id": "jDE2TNcRqPChg6v5",
+                    "name": "Supabase account 2"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "fieldToSplitOut": "items",
+                "include": "allOtherFields",
+                "options": []
+            },
+            "type": "n8n-nodes-base.splitOut",
+            "typeVersion": 1,
+            "position": [
+                -4380,
+                20
+            ],
+            "id": "242e3eba-0bb9-4da5-883e-5ec3d9cf1207",
+            "name": "Split Comments"
+        },
+        {
+            "parameters": {
+                "url": "https:\/\/www.googleapis.com\/youtube\/v3\/commentThreads",
+                "authentication": "predefinedCredentialType",
+                "nodeCredentialType": "youTubeOAuth2Api",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "part",
+                            "value": "snippet"
+                        },
+                        {
+                            "name": "videoId",
+                            "value": "={{ $json.videoId }}"
+                        },
+                        {
+                            "name": "maxResults",
+                            "value": "5"
+                        }
+                    ]
+                },
+                "options": []
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.20000000000000017763568394002504646778106689453125,
+            "position": [
+                -4600,
+                20
+            ],
+            "id": "4ec39159-8028-403d-b220-bac1bf692d23",
+            "name": "Get Video Snippet",
+            "credentials": {
+                "youTubeOAuth2Api": {
+                    "id": "djF2iL9aszGWqGrT",
+                    "name": "YouTube account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "mode": "combine",
+                "combineBy": "combineAll",
+                "options": []
+            },
+            "type": "n8n-nodes-base.merge",
+            "typeVersion": 3.100000000000000088817841970012523233890533447265625,
+            "position": [
+                -2980,
+                -420
+            ],
+            "id": "adad2a72-2b81-499c-9806-7d5af3686c7f",
+            "name": "Merge"
+        },
+        {
+            "parameters": {
+                "jsCode": "\/\/ Decode HTML and numeric entities\nfunction decodeHtmlEntities(text) {\n  return text\n    .replace(\/&#(d+);\/g, (_, dec) => String.fromCharCode(dec))\n    .replace(\/&#(d+);\/g, (_, dec) => String.fromCharCode(dec))\n    .replace(\/&\/g, '&')\n    .replace(\/<\/g, '<')\n    .replace(\/>\/g, '>')\n    .replace(\/"\/g, '\"')\n    .replace(\/&apos;\/g, \"'\")\n    .replace(\/ \/g, ' ')\n    .replace(\/’\/g, \"'\")\n    .replace(\/‘\/g, \"'\")\n    .replace(\/“\/g, '\"')\n    .replace(\/”\/g, '\"');\n}\n\n\/\/ Clean transcript more aggressively\nfunction cleanTranscript(text) {\n  let cleaned = decodeHtmlEntities(text);\n\n  \/\/ Remove intro and outro\n  cleaned = cleaned.replace(\/Hi guys,.*?In this video,.*?showing you\/i, '');\n  cleaned = cleaned.replace(\/Thanks for watching.*?(Bye-?bye)?.?\/i, '');\n\n  \/\/ Remove repeated filler phrases\n  cleaned = cleaned.replace(\/b(So|Now|Okay|Alright|Then|Just)b[.,]?s*\/gi, '');\n\n  \/\/ Optional: remove call to action\n  cleaned = cleaned.replace(\/subscribe.*?bell icon.*?(to get notified)?.?\/i, '');\n\n  \/\/ Normalize whitespace\n  cleaned = cleaned.replace(\/s+\/g, ' ').trim();\n\n  return cleaned;\n}\n\n\/\/ Use provided transcript\nconst inputText = $input.item.json.transcript || '';\nconst outputText = cleanTranscript(inputText);\n\nreturn [{\n  json: {\n    cleaned_transcript: outputText\n  }\n}];\n"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                -3960,
+                -440
+            ],
+            "id": "e61a5313-1643-453c-baa3-4ab5d745fc05",
+            "name": "Cleanup transcript"
+        },
+        {
+            "parameters": {
+                "options": []
+            },
+            "type": "@n8n\/n8n-nodes-langchain.chatTrigger",
+            "typeVersion": 1.100000000000000088817841970012523233890533447265625,
+            "position": [
+                -5200,
+                20
+            ],
+            "id": "5de79e19-843b-4134-b083-42d11d8d7ec4",
+            "name": "When chat message received",
+            "webhookId": "e7533ff3-1e72-414a-b61d-9cdd0d75541a"
+        },
+        {
+            "parameters": {
+                "promptType": "define",
+                "text": "=This is the comment to be evaluated:\n{{ $json.comment }}",
+                "hasOutputParser": true,
+                "messages": {
+                    "messageValues": [
+                        {
+                            "message": "You are an agent for evaluating and classifying comments on videos on a YouTube channel about artificial intelligence.  There are only 3 possible classifications:  -specificdoubt: When there is a specific doubt about the content of the video. If there is a compliment or a doubt, it should also be classified as specificdoubt.  -compliment: When it is only a compliment and there is no doubt about the content of the video. -criticize: When the text is a criticism or insult and there is no doubt about the content."
+                        }
+                    ]
+                }
+            },
+            "type": "@n8n\/n8n-nodes-langchain.chainLlm",
+            "typeVersion": 1.600000000000000088817841970012523233890533447265625,
+            "position": [
+                -3200,
+                -40
+            ],
+            "id": "5a36b5a2-091d-48a1-bdab-971ced5c0892",
+            "name": "Comment Classifier"
+        },
+        {
+            "parameters": {
+                "promptType": "define",
+                "text": "=comment received on the video:\n{{ $('Update comment to Database').item.json.comment }}",
+                "hasOutputParser": true,
+                "messages": {
+                    "messageValues": [
+                        {
+                            "message": "You are a YouTube video comment response agent, thank them for the compliment and thank them for the comment. Be informal and direct."
+                        }
+                    ]
+                }
+            },
+            "type": "@n8n\/n8n-nodes-langchain.chainLlm",
+            "typeVersion": 1.600000000000000088817841970012523233890533447265625,
+            "position": [
+                -2480,
+                -220
+            ],
+            "id": "df2b689b-acd4-4496-ade6-6ca98d1e822f",
+            "name": "Compliment Reply"
+        },
+        {
+            "parameters": {
+                "promptType": "define",
+                "text": "=comment received on the video:\n{{ $('Update comment to Database').item.json.comment }}\n\nHere is the video transcript:\n{{ $json.cleaned_transcript }}",
+                "hasOutputParser": true,
+                "messages": {
+                    "messageValues": [
+                        {
+                            "message": "You are a YouTube video comment response agent. If the comment includes a specific doubt or question, reply with a clear, concise answer based only on correct and verified information. Be helpful and straight to the point — avoid fluff or guesses. If you're not 100% sure of the correct answer, do not reply. Keep the tone friendly and respectful.\n\nBefore replying, check the video transcript to understand the context and content. Use the transcript to ensure your reply accurately reflects what was explained or demonstrated in the video."
+                        }
+                    ]
+                }
+            },
+            "type": "@n8n\/n8n-nodes-langchain.chainLlm",
+            "typeVersion": 1.600000000000000088817841970012523233890533447265625,
+            "position": [
+                -2480,
+                140
+            ],
+            "id": "3dc48073-b346-45a7-b5ae-8edf222eb7ce",
+            "name": "Specific Doubt Reply"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https:\/\/www.googleapis.com\/youtube\/v3\/comments",
+                "authentication": "predefinedCredentialType",
+                "nodeCredentialType": "youTubeOAuth2Api",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "part",
+                            "value": "snippet"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "snippet.textOriginal",
+                            "value": "={{ $json.text }}"
+                        },
+                        {
+                            "name": "snippet.parentId",
+                            "value": "={{ $('Update comment to Database').item.json.id_comment }}"
+                        }
+                    ]
+                },
+                "options": []
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.20000000000000017763568394002504646778106689453125,
+            "position": [
+                -2120,
+                -220
+            ],
+            "id": "635ed69c-9497-48b0-b8bf-9853425fe27b",
+            "name": "Comment Response",
+            "credentials": {
+                "youTubeOAuth2Api": {
+                    "id": "djF2iL9aszGWqGrT",
+                    "name": "YouTube account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https:\/\/www.googleapis.com\/youtube\/v3\/comments",
+                "authentication": "predefinedCredentialType",
+                "nodeCredentialType": "youTubeOAuth2Api",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "part",
+                            "value": "snippet"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "snippet.textOriginal",
+                            "value": "={{ $json.text }}"
+                        },
+                        {
+                            "name": "snippet.parentId",
+                            "value": "={{ $('Update comment to Database').item.json.id_comment }}"
+                        }
+                    ]
+                },
+                "options": []
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.20000000000000017763568394002504646778106689453125,
+            "position": [
+                -2120,
+                140
+            ],
+            "id": "38a09bff-4d22-44b6-8872-1326f77afc22",
+            "name": "Comment Response1",
+            "credentials": {
+                "youTubeOAuth2Api": {
+                    "id": "djF2iL9aszGWqGrT",
+                    "name": "YouTube account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "tableId": "YT_Comment",
+                "filters": {
+                    "conditions": [
+                        {
+                            "keyName": "=id_comment",
+                            "condition": "eq",
+                            "keyValue": "={{ $('Loop Over Items').item.json.items.snippet.topLevelComment.id }}"
+                        }
+                    ]
+                },
+                "fieldsUi": {
+                    "fieldValues": [
+                        {
+                            "fieldId": "=reply",
+                            "fieldValue": "={{ $json.snippet.textOriginal }}"
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.supabase",
+            "typeVersion": 1,
+            "position": [
+                -1720,
+                140
+            ],
+            "id": "381f0a24-7f64-463b-9cb8-0db11f20cf04",
+            "name": "Update responce to Database",
+            "credentials": {
+                "supabaseApi": {
+                    "id": "jDE2TNcRqPChg6v5",
+                    "name": "Supabase account 2"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"startUrls\": [\n    \"https:\/\/www.youtube.com\/watch?v={{ $json.items[0].snippet.videoId }}\"\n  ],\n  \"language\": \"Default\",\n  \"includeTimestamps\": \"No\"\n}\n\n",
+                "options": []
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.20000000000000017763568394002504646778106689453125,
+            "position": [
+                -4300,
+                -440
+            ],
+            "id": "0f1333a8-bf18-4477-bead-0dd9d08cf93c",
+            "name": "Get YouTube Transcript",
+            "alwaysOutputData": false
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "b22e5ef2-30ae-4e45-ad04-8e06a7b4001f",
+                            "name": "video_url",
+                            "value": "={{ $json.chatInput }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": []
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.399999999999999911182158029987476766109466552734375,
+            "position": [
+                -5000,
+                20
+            ],
+            "id": "36f20979-c778-47be-bc9e-44dd40fac71d",
+            "name": "Get Video URL"
+        },
+        {
+            "parameters": {
+                "jsCode": "const urlString = $json[\"video_url\"];\nlet videoId = null;\n\ntry {\n  const u = new URL(urlString);\n  if (u.hostname.includes(\"youtu.be\")) {\n    \/\/ short URL: pathname is \"\/<VIDEOID>\"\n    videoId = u.pathname.slice(1);\n  } else {\n    \/\/ regular URL: look for ?v=\n    videoId = u.searchParams.get(\"v\");\n  }\n} catch (e) {\n  \/\/ fallback regex if URL parsing fails\n  const m = urlString.match(\/(?:youtu.be\/|v=)([^&\/?#]+)\/);\n  videoId = m ? m[1] : null;\n}\n\nreturn [\n  {\n    json: { videoId },\n  },\n];\n"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                -4800,
+                20
+            ],
+            "id": "40119298-f94a-4b7d-a87f-1be2f3de65f2",
+            "name": "Get Video ID"
+        }
+    ],
+    "pinData": [],
+    "connections": {
+        "Loop Over Items": {
+            "main": [
+                [],
+                [
+                    {
+                        "node": "Get Database Value",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Replace Me": {
+            "main": [
+                [
+                    {
+                        "node": "Loop Over Items",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "If": {
+            "main": [
+                [
+                    {
+                        "node": "No Operation, do nothing",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Update comment to Database",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "No Operation, do nothing": {
+            "main": [
+                [
+                    {
+                        "node": "Loop Over Items",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Structured Output Parser": {
+            "ai_outputParser": [
+                [
+                    {
+                        "node": "Comment Classifier",
+                        "type": "ai_outputParser",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "gpt-4o-mini": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "Comment Classifier",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Switch": {
+            "main": [
+                [
+                    {
+                        "node": "No Operation, do nothing1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Compliment Reply",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 1
+                    }
+                ]
+            ]
+        },
+        "No Operation, do nothing1": {
+            "main": [
+                [
+                    {
+                        "node": "Replace Me",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "gpt-4o-mini1": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "Compliment Reply",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "gpt-4o-mini2": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "Specific Doubt Reply",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Update comment to Database": {
+            "main": [
+                [
+                    {
+                        "node": "Comment Classifier",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get Database Value": {
+            "main": [
+                [
+                    {
+                        "node": "If",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Split Comments": {
+            "main": [
+                [
+                    {
+                        "node": "Loop Over Items",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get Video Snippet": {
+            "main": [
+                [
+                    {
+                        "node": "Split Comments",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Get YouTube Transcript",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Merge": {
+            "main": [
+                [
+                    {
+                        "node": "Specific Doubt Reply",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Cleanup transcript": {
+            "main": [
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "When chat message received": {
+            "main": [
+                [
+                    {
+                        "node": "Get Video URL",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Comment Classifier": {
+            "main": [
+                [
+                    {
+                        "node": "Switch",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Compliment Reply": {
+            "main": [
+                [
+                    {
+                        "node": "Comment Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Specific Doubt Reply": {
+            "main": [
+                [
+                    {
+                        "node": "Comment Response1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Comment Response": {
+            "main": [
+                [
+                    {
+                        "node": "Replace Me",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Update responce to Database",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Comment Response1": {
+            "main": [
+                [
+                    {
+                        "node": "Replace Me",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Update responce to Database",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get YouTube Transcript": {
+            "main": [
+                [
+                    {
+                        "node": "Cleanup transcript",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get Video URL": {
+            "main": [
+                [
+                    {
+                        "node": "Get Video ID",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get Video ID": {
+            "main": [
+                [
+                    {
+                        "node": "Get Video Snippet",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": false,
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "versionId": "29056559-85be-4648-a9e5-4a622a56da6f",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "0b008bd86df5902c8c20987844e8ef7a6cf9a5639f4abd7f8a22764455c02c65"
+    },
+    "id": "k6pXp5omiGYnI2Kc",
+    "tags": []
+}
